@@ -1,6 +1,6 @@
-var info_view1 = echarts.init(document.getElementById('xpanel-l-6'));
+var info3_graph = echarts.init(document.getElementById('info3-2'));
 
-var info_view1_option = {
+var info3_option = {
   tooltip: {
     trigger: 'item',
     formatter: '{a} <br/>{b}: {c} ({d}%)'
@@ -62,21 +62,21 @@ var info_view1_option = {
     }
   ]
 };
-info_view1.setOption(info_view1_option);
+info3_graph.setOption(info3_option);
 
-$.get('/data-info3-view').done(function (data){
-    info_view1.setOption({
+$.get('/data-info3-view').done(function (info3_data){
+    info3_graph.setOption({
     series:[{
         name:'link',
-        data:data.link[0]
+        data:info3_data.link[0]
     },
     {
         name:'node',
-        data:data.node[0]
+        data:info3_data.node[0]
     }]
     });
 });
-info_view1.setOption(info_view1_option);
+info3_graph.setOption(info3_option);
 
 $('#graphTypes').on('change',function(){
     var lie=document.getElementById("graphTypes")//获取select标签
@@ -84,15 +84,15 @@ $('#graphTypes').on('change',function(){
         $.ajax({
             url:'/data-info3-view',
             type: 'get',
-            success: function(data) {
-                info_view1.setOption({
+            success: function(info3_data) {
+                info3_graph.setOption({
                     series:[{
                         name:'link',
-                        data:data.link[index]
+                        data:info3_data.link[index]
                     },
                     {
                         name:'node',
-                        data:data.node[index]
+                        data:info3_data.node[index]
                     }]
                     });
             },
@@ -100,5 +100,4 @@ $('#graphTypes').on('change',function(){
 
             }
         })
-//    }
 })
