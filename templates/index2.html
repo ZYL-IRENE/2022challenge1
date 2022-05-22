@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+    <style>
+    .div1{
+        position:absolute;
+        left   :1%;
+        top    :15%;
+        height :84%;
+        width  :99%
+    }
+    input{
+        position:absolute;
+        left   :10%;
+        top    :1%;
+        height :4%;
+        width  :10%
+    }
+    select{
+        position:absolute;
+        left   :10%;
+        top    :1%;
+        height :12%;
+        width  :10%
+    }
+    #words{
+        display: none;
+        height: 2%,
+    }
+    </style>
+    <script type="text/javascript" src="/static/echarts.js"></script>
+    <script type="text/javascript" src="/static/data.js"></script>
+</head>
+<body>
+    <input id="show" type="text" name="" > <br />
+	<select id="words">
+		<option>ALL</option>
+		<option>Domain</option>
+		<option>IP</option>
+		<option>IP_C</option>
+		<option>ASN</option>
+		<option>Cert</option>
+		<option>Whois_Name</option>
+		<option>Whois_Phone</option>
+		<option>Whois_Email</option>
+	</select>
+    <div class="div1"></div>
+
+	<script type="text/javascript">
+		let show = document.getElementById('show');
+		let words = document.getElementById('words');
+
+		show.onclick = function(e){
+			words.style.display = 'block';
+		}
+		words.size = 3;
+		words.onchange = function(e){
+			var option = this.options[this.selectedIndex];
+			show.value = option.innerHTML;
+			words.style.display = 'none';
+			l1 = name_nodes_dict[option.innerHTML];
+			data = [];
+            for(var i=0;i<l1.length;i++){
+                data.push([i, Math.log10(l1[i]+1).toFixed(1)]);
+            }
+
+            option1['series'][0]['data'] = data;
+            option1['title']['text'] = option.innerHTML;
+            graph1.setOption(option1);
+		}
+	</script>
+    <script>
+        div1 = document.getElementsByClassName("div1")[0];
+        graph1 = echarts.init(div1);
+
+        var nodetype = "Domain";
+
+        option1 = {
+            tooltip:{
+                show:true,
+                trigger:'item',
+                triggerOn: 'mousemove|click',
+                formatter:function(args){
+                    return '度数:'+args['data'][0]+',数量:'+args['data'][1];
+                }
+            },
+            xAxis: {},
+            yAxis: {},
+            grid: {
+                left: "5%",
+                right: "5%",
+                top: "2%",
+            },
+            title:{
+                show: true,
+                text: nodetype,
+                textStyle: {
+                    fontWeight: 'normal',
+                    fontSize: 20,
+                },
+                right: "5%",
+                top: "2%",
+            },
+            series: [
+            {
+                data: [],
+                type: 'line',
+                label:{
+                    show: true,
+                    formatter: function(args){
+                        series_data = option1.series[0]['data'];
+                        if(args['data'][0] == series_data[series_data.length-1][0]){
+                            return "("+args['data'][0]+" , "+args['data'][1]+")";
+                        } else if(args['data'][0] == 1 || args['data'][0] == 100){
+                            return "("+args['data'][0]+" , "+args['data'][1]+")";
+                        }
+                        return "";
+                    },
+                    position:[5, -10],
+                    color:'blue',
+                    fontSize: 15,
+                },
+            }]
+        };
+
+
+        data = [];
+        for(var i=0;i<l_Domain.length;i++){
+            data.push([i, Math.log10(l_nodes[i]+1).toFixed(1)]);
+        }
+
+        option1['series'][0]['data'] = data;
+
+        graph1.setOption(option1);
+    </script>
+</body>
+</html>

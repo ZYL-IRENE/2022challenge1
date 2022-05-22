@@ -123,3 +123,16 @@ html,body {
     height: 100%;
     box-sizing: border-box;
 }
+
+#info1-1{
+    width: 100%;
+    height: 10%;
+}
+#info1-1-words{
+    width: 20%;
+    height: 100%;
+}
+#info1-2{
+    width: 100%;
+    height: 90%;
+}
