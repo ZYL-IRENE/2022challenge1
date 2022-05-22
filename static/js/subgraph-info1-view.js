@@ -1,15 +1,14 @@
-var subgraph_info1 = echarts.init(document.getElementById('xpanel-r-2'));
-var hours = ['子图1-1', '子图1-2', '子图1-3',
+var info6_graph = echarts.init(document.getElementById('info6-2'));
+var group6_hours = ['子图1-1', '子图1-2', '子图1-3',
     '子图1-4', '子图1-5', '子图2-1',
     '子图2-2', '子图2-3','子图2-4',
     '子图2-5'
 ];
-var days = ['A', 'B', 'C',
+var group6_days = ['A', 'B', 'C',
     'D', 'E','F','G','I'
 ];
-// {'A': 0.3, 'B': 0.225, 'C': 0.05, 'D': 0.0,
-// 'E': 0.3, 'F': 0.0, 'G': 0.125, 'H': 0.0, 'I': 0.0}
-var data = [
+
+var group6_data = [
     [0, 0, 0.3],
     [1, 0, 0.225],
     [2, 0, 0.05],
@@ -102,11 +101,11 @@ var data = [
     [8, 9, 0.0]
 ];
 
-data = data.map(function(item) {
+group6_data = group6_data.map(function(item) {
     return [item[1], item[0], item[2] || '-'];
 });
 
-subgraph_info1_option = {
+info6_option = {
     title: {
         text: '黑色产业分析',
         left: 'center',
@@ -121,14 +120,14 @@ subgraph_info1_option = {
     },
     xAxis: {
         type: 'category',
-        data: hours,
+        data: group6_hours,
         splitArea: {
             show: true
         }
     },
     yAxis: {
         type: 'category',
-        data: days,
+        data: group6_days,
         splitArea: {
             show: true
         }
@@ -145,7 +144,6 @@ subgraph_info1_option = {
         show: true,
         yAxisIndex: [0],
         left: '93%',
-//        bottom: '10%',
         start: 1,
         end: 100
     }, {
@@ -169,7 +167,7 @@ subgraph_info1_option = {
     series: [{
         name: 'Punch Card',
         type: 'heatmap',
-        data: data,
+        data: group6_data,
         label: {
             normal: {
                 show: true
@@ -184,4 +182,4 @@ subgraph_info1_option = {
     }]
 };
 
-subgraph_info1.setOption(subgraph_info1_option);
+info6_graph.setOption(info6_option);
