@@ -28,7 +28,6 @@ def get_info3_view_data():
             link_list.append(temp_dict)
         res_node.append(node_list)
         res_link.append(link_list)
-    print(res_node)
     return jsonify({"node": res_node, "link": res_link})
 
 if __name__ == '__main__':
