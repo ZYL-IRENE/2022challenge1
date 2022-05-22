@@ -23,17 +23,17 @@
                  子图展示
                 <script type="text/javascript" src="http://d3js.org/d3.v5.min.js"></script>
 <script>
-    var width = 600;
-    var height = 600;
-    var svg = d3.select("#subgraph-view")//相当于新建一个画布 select->索引
+        var graph4_width = 600;
+    var graph4_height = 600;
+    var graph4_svg = d3.select("#subgraph-view")//相当于新建一个画布 select->索引
         .append("svg")//在这个画布上添加一个元素
-        .attr("width",width)//这个元素的宽
-        .attr("height",height);//这个元素的高
+        .attr("width",graph4_width)//这个元素的宽
+        .attr("height",graph4_height);//这个元素的高
  
-    var marge = {top:10,bottom:10,left:10,right:10}//中间区域main group
+    var graph4_marge = {top:10,bottom:10,left:10,right:10}//中间区域main group
  
-    var g = svg.append("g")
-        .attr("transform","translate("+marge.top+","+marge.left+")",'id','maingroup');
+    var graph4_g = graph4_svg.append("g")
+        .attr("transform","translate("+graph4_marge.top+","+graph4_marge.left+")",'id','maingroup');
 
  
     //根据python导出csv-》存成字典(节点id，节点类型，节点名称，业务类型)    
@@ -49,7 +49,7 @@
     // });
 
 
-    var nodes = [//节点集
+    var graph4_nodes = [//节点集
         {name:"Domain",group:2.5},
         {name:"Cert",group:2},
         {name:"IP",group:2},
@@ -70,7 +70,7 @@
         {name:"IP_C",group:1},
     ];
 
-    var edges = [//边集
+    var graph4_edges = [//边集
         {source:0,target:1,value:2},  //value控制线的长短（根据关联程度，关联程度强则更近）
         {source:0,target:2,value:2},
         {source:0,target:3,value:2},
@@ -91,8 +91,8 @@
     ];
    
     //设置一个color的颜色比例尺，为了让不同的扇形呈现不同的颜色
-    var colorScale = d3.scaleOrdinal()
-        .domain(d3.range(nodes.length))
+    var graph4_colorScale = d3.scaleOrdinal()
+        .domain(d3.range(graph4_nodes.length))
         .range(d3.schemeCategory10);
  
  
@@ -102,42 +102,42 @@
         .force("center",d3.forceCenter());
 
     //生成节点数据
-    forceSimulation.nodes(nodes)
+    forceSimulation.nodes(graph4_nodes)
         .on("tick",ticked)
 
 
     //生成边数据
     forceSimulation.force("link")
-        .links(edges)
+        .links(graph4_edges)
         .distance(function(d){//每一边的长度
             return d.value*100;
         })
     
     //设置图形的中心位置
     forceSimulation.force("center")
-        .x(width/2)
-        .y(height/2);
+        .x(graph4_width/2)
+        .y(graph4_height/2);
 
     //在浏览器的控制台输出
-    console.log(nodes);
-    console.log(edges);
+    console.log(graph4_nodes);
+    console.log(graph4_edges);
 
     //绘制边
-    var links = g.append("g")
+    var graph4_links = graph4_g.append("g")
         .selectAll("line")
-        .data(edges)
+        .data(graph4_edges)
         .enter()
         .append("line")
         .attr("stroke",function(d,i){
-            return colorScale(d.value);   //边的颜色
+            return graph4_colorScale(d.value);   //边的颜色
         })
         .attr("stroke-width",1);
     
 
     //边上文字
-    var linksText = g.append("g")
+    var graph4_linksText = graph4_g.append("g")
         .selectAll("text")
-        .data(edges)
+        .data(graph4_edges)
         .enter()
         .append("text")
         .text(function(d){
@@ -145,8 +145,8 @@
         })
 
     //建立用来放在每个节点和对应文字的分组<g>
-    var gs = g.selectAll(".circleText")
-        .data(nodes)
+    var graph4_gs = graph4_g.selectAll(".circleText")
+        .data(graph4_nodes)
         .enter()
         .append("g")
         .attr("transform",function(d,i){
@@ -155,21 +155,21 @@
             return "translate("+cirX+","+cirY+")";
         })
         .call(d3.drag()
-            .on("start",started)
-            .on("drag",dragged)
-            .on("end",ended)
+            .on("start",graph4_started)
+            .on("drag",graph4_dragged)
+            .on("end",graph4_ended)
         )
 
     
      //绘制节点
-    gs.append("circle")
+     graph4_gs.append("circle")
        // .attr("r",20)
         .attr("r",function (d,i) {    //圆圈半径
             return d.group*15;
         })
         .attr("fill",function(d,i){
             //return colorScale(i);
-            return colorScale(d.group);
+            return graph4_colorScale(d.group);
         })
         .on("click",function(d,i){
             d3.select(this).attr("fill","yellow");
@@ -183,7 +183,7 @@
 
 
     //文字
-    gs.append("text")
+    graph4_gs.append("text")
         /*.attr("x",-10)
         .attr("y",-20)
         .attr("dy",10)*/
@@ -196,13 +196,13 @@
 
 
     function ticked(){
-        links
+        graph4_links
             .attr("x1",function(d){return d.source.x;})
             .attr("y1",function(d){return d.source.y;})
             .attr("x2",function(d){return d.target.x;})
             .attr("y2",function(d){return d.target.y;});
  
-        linksText
+        graph4_linksText
             .attr("x",function(d){
                 return (d.source.x+d.target.x)/2;
             })
@@ -210,22 +210,22 @@
                 return (d.source.y+d.target.y)/2;
             });
  
-        gs
+        graph4_gs
             .attr("transform",function(d) { return "translate(" + d.x + "," + d.y + ")"; });
     }
     //drag
-    function started(d){
+    function graph4_started(d){
         if(!d3.event.active){
             forceSimulation.alphaTarget(0.8).restart();//设置衰减系数，对节点位置移动过程的模拟，数值越高移动越快，数值范围[0，1]
         }
         d.fx = d.x;
         d.fy = d.y;
     }
-    function dragged(d){
+    function graph4_dragged(d){
         d.fx = d3.event.x;
         d.fy = d3.event.y;
     }
-    function ended(d){
+    function graph4_ended(d){
         if(!d3.event.active){
             forceSimulation.alphaTarget(0);
         }
