@@ -1,185 +1,141 @@
 var info6_graph = echarts.init(document.getElementById('info6-2'));
-var group6_hours = ['子图1-1', '子图1-2', '子图1-3',
-    '子图1-4', '子图1-5', '子图2-1',
-    '子图2-2', '子图2-3','子图2-4',
-    '子图2-5'
-];
-var group6_days = ['A', 'B', 'C',
-    'D', 'E','F','G','I'
-];
+var info7_graph = echarts.init(document.getElementById('info7-2'));
+info6_option = {
+    tooltip: {
+        show: true,
+        trigger: 'item',
+        formatter: '{a} <br/>{b}: {c} ({d}%)'
+    },
+    legend: {
+    data: [
+ 'Domain', 'IP', 'Cert', 'Whois_Name', 'Whois_Phone', 'Whois_Email', 'IP_C', 'ASN'
+    ]
+      },
+  series: [
+    {
+      name: 'link',
+      type: 'pie',
+      selectedMode: 'single',
+      radius: [0, '30%'],
+      label: {
+        position: 'inner',
+        fontSize: 14
+      },
+      labelLine: {
+        show:false
+      },
+        top:20,
+       data:[]
+    },
+    {
+      name: 'node',
+      type: 'pie',
+      radius: ['45%', '60%'],
+      labelLine: {
+        length: 1
+      },
+      top:20,
+      data: []
+    }
+  ]
+};
+info6_graph.setOption(info6_option);
 
-var group6_data = [
-    [0, 0, 0.3],
-    [1, 0, 0.225],
-    [2, 0, 0.05],
-    [3, 0, 0],
-    [4, 0, 0.3],
-    [5, 0, 0],
-    [6, 0, 0.125],
-    [7, 0, 0],
-    [8, 0, 0],
-    [0, 1, 0.0],
-    [1, 1, 1],
-    [2, 1, 0],
-    [3, 1, 0],
-    [4, 1, 0],
-    [5, 1, 0],
-    [6, 1, 0],
-    [7, 1, 0],
-    [8, 1, 0],
-    [0, 2, 0.0],
-    [1, 2, 0],
-    [2, 2, 0],
-    [3, 2, 0],
-    [4, 2, 0],
-    [5, 2, 0],
-    [6, 2, 0],
-    [7, 2, 0],
-    [8, 2, 0],
-    [0, 3, 0.0],
-    [1, 3, 0],
-    [2, 3, 0],
-    [3, 3, 0],
-    [4, 3, 0],
-    [5, 3, 0],
-    [6, 3, 0],
-    [7, 3, 0],
-    [8, 3, 0],
-    [0, 4, 0.0],
-    [1, 4, 0],
-    [2, 4, 0],
-    [3, 4, 0],
-    [4, 4, 0],
-    [5, 4, 0],
-    [6, 4, 0],
-    [7, 4, 0],
-    [8, 4, 0],
-    [0, 5, 0.0],
-    [1, 5, 0],
-    [2, 5, 0],
-    [3, 5, 0],
-    [4, 5, 0],
-    [5, 5, 0],
-    [6, 5, 0],
-    [7, 5, 0],
-    [8, 5, 0],
-    [0, 6, 0.0],
-    [1, 6, 0],
-    [2, 6, 0],
-    [3, 6, 0],
-    [4, 6, 0],
-    [5, 6, 0],
-    [6, 6, 0],
-    [7, 6, 0],
-    [8, 6, 0],
-    [0, 7, 0.0],
-    [1, 7, 0],
-    [2, 7, 0],
-    [3, 7, 0],
-    [4, 7, 0],
-    [5, 7, 0],
-    [6, 7, 0],
-    [7, 7, 0],
-    [8, 7, 0.0],
-    [0, 8, 0.0],
-    [1, 8, 0],
-    [2, 8, 0],
-    [3, 8, 0],
-    [4, 8, 0],
-    [5, 8, 0],
-    [6, 8, 0],
-    [7, 8, 0],
-    [8, 8, 0],
-    [0, 9, 0.0],
-    [1, 9, 0],
-    [2, 9, 0],
-    [3, 9, 0],
-    [4, 9, 0],
-    [5, 9, 0],
-    [6, 9, 0],
-    [7, 9, 0],
-    [8, 9, 0.0]
-];
+info7_option ={
+    title: {
+      text: 'KeyLinks',
+      subtext: 'Default layout',
+      top: 'bottom',
+      left: 'right'
+    },
+    tooltip: {},
+    legend: [
+      {
+        data: [
+ 'Domain', 'IP', 'Cert', 'Whois_Name', 'Whois_Phone', 'Whois_Email', 'IP_C', 'ASN'
+    ]
+      }
+    ],
+    series: [
+      {
+        name: 'KeyLines',
+        type: 'graph',
+        layout: 'force',
+        data: [],
+        links: [],
+        categories: [],
+        roam: true,
+        label: {
+          position: 'right'
+        },
+        force: {
+          repulsion: 100
+        }
+      }
+    ]
+  };
+info7_graph.setOption(info7_option);
 
-group6_data = group6_data.map(function(item) {
-    return [item[1], item[0], item[2] || '-'];
+$.get('/subgraph-info1-view').done(function (info6_data){
+    info6_graph.setOption({
+    series:[{
+        name:'link',
+        data:info6_data.link[0]
+    },
+    {
+        name:'node',
+        data:info6_data.node[0]
+    }]
+    });
+});
+$.get('/subgraph-info2-view').done(function (info7_data){
+    info7_graph.setOption({
+    series:[{
+        name:'KeyLines',
+        data:info7_data.node[0],
+        links:info7_data.link[0],
+        categories:info7_data.category
+    }]
+    });
 });
 
-info6_option = {
-    title: {
-        text: '黑色产业分析',
-        left: 'center',
-    },
-    tooltip: {
-        position: 'top'
-    },
-    animation: false,
-    grid: {
-        height: '50%',
-        y: '10%'
-    },
-    xAxis: {
-        type: 'category',
-        data: group6_hours,
-        splitArea: {
-            show: true
-        }
-    },
-    yAxis: {
-        type: 'category',
-        data: group6_days,
-        splitArea: {
-            show: true
-        }
-    },
-    dataZoom: [{
-        type: 'slider',
-        show: true,
-        xAxisIndex: [0],
-        bottom: '20%',
-        start: 1,
-        end: 50
-    }, {
-        type: 'slider',
-        show: true,
-        yAxisIndex: [0],
-        left: '93%',
-        start: 1,
-        end: 100
-    }, {
-        type: 'inside',
-        xAxisIndex: [0],
-        start: 1,
-        end: 100
-    }, {
-        type: 'inside',
-        yAxisIndex: [0],
-        start: 1,
-        end: 100
-    }],
-    visualMap: {
-        min: 0,
-        max: 1,
-        calculable: true,
-        left: 'left',
-        bottom: '15%'
-    },
-    series: [{
-        name: 'Punch Card',
-        type: 'heatmap',
-        data: group6_data,
-        label: {
-            normal: {
-                show: true
-            }
-        },
-        itemStyle: {
-            emphasis: {
-                shadowBlur: 10,
-                shadowColor: 'rgba(0, 0, 0, 0.5)'
-            }
-        }
-    }]
-};
 
-info6_graph.setOption(info6_option);
+$('#graphTypes').on('change',function(){
+    var lie=document.getElementById("graphTypes")//获取select标签
+    var index=lie.selectedIndex
+        $.ajax({
+            url:'/subgraph-info1-view',
+            type: 'get',
+            success: function(info6_data) {
+                info6_graph.setOption({
+                    series:[{
+                        name:'link',
+                        data:info6_data.link[index]
+                    },
+                    {
+                        name:'node',
+                        data:info6_data.node[index]
+                    }]
+                    });
+            },
+            error: function(xhr, type, errorThrown) {
+
+            }
+        })
+        $.ajax({
+            url:'/subgraph-info2-view',
+            type: 'get',
+            success: function(info7_data) {
+                info7_graph.setOption({
+                    series:[{
+                        name:'KeyLines',
+                        data:info7_data.node[index],
+                        links:info7_data.link[index]
+                    }]
+                    });
+            },
+            error: function(xhr, type, errorThrown) {
+
+            }
+        })
+})
