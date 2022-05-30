@@ -115,6 +115,12 @@
             </div>
         </div>
     </div>
+<script src="../static/data/data_info1/data1.js"></script>
+<script src="../static/js/data_info_view1.js"></script>
+<script src="../static/js/data_info_view2.js"></script>
+<script src="../static/js/data_info_view3.js"></script>
+<script src="../static/js/subgraph_info1_view.js"></script>
+<!--<script src="../static/js/subgraph_info2_view.js"></script>-->
 <script>
     function login(){
         var a = $("#is_contain_empty_industry").val();
@@ -125,7 +131,7 @@
             url: '/register',
             data: {id: $("#id").serialize(), is_contain_empty_industry: a, cert_n: b, ratio: c},
             success: function (res){
-                alert(res); // insert the code here
+                knowledgegraph(res);
             },
             error: function(){
                 alert('error');
@@ -133,12 +139,178 @@
 
         });
     }
+    // Domain_c58c149eec59bb14b0c102a0f303d4c20366926b5c3206555d2937474124beb9
+    function knowledgegraph(res){
+        original_nodes = res.nodes;
+        original_links = res.links;
+
+        var nodes = [];
+        var node_index_dict = [];
+        var links = [];
+        for(var i=0;i<original_nodes.length;i++){
+            var node = original_nodes[i];
+            node_index_dict[node.id] = i;
+            nodes.push({
+                'name':node.type,
+                'group':1,
+                'id':node.id,
+            });
+        }
+        for(var i=0;i<original_links.length;i++){
+            var index1 = node_index_dict[original_links[i].source];
+            var index2 = node_index_dict[original_links[i].target];
+            links.push({
+                source:index1,
+                target:index2,
+                relation:original_links[i].relation,
+                value:1,
+            });
+        }
+        console.log(nodes[0]);
+        console.log(links[0]);
+        var graph4_div = document.getElementById('subgraph-view');
+        var graph4_width = graph4_div.clientWidth;
+        var graph4_height = graph4_div.clientHeight;
+        var graph4_svg = d3.select("#subgraph-view")
+            .append("svg")
+            .attr("width",graph4_width)
+            .attr("height",graph4_height);
+
+        var graph4_marge = {top:10,bottom:10,left:10,right:10}
+
+        var graph4_g = graph4_svg.append("g")
+            .attr("transform","translate("+graph4_marge.top+","+graph4_marge.left+")",'id','maingroup');
+
+        var graph4_nodes = nodes;
+        var graph4_edges = links;
+
+        //设置一个color的颜色比例尺，为了让不同的扇形呈现不同的颜色
+        var graph4_colorScale = d3.scaleOrdinal()
+            .domain(d3.range(graph4_nodes.length))
+            .range(d3.schemeCategory10);
+
+
+        var forceSimulation = d3.forceSimulation()
+            .force("link",d3.forceLink())
+            .force("charge",d3.forceManyBody())//万有引力
+            .force("center",d3.forceCenter());
+
+        //生成节点数据
+        forceSimulation.nodes(graph4_nodes)
+            .on("tick",ticked)
+
+
+        //生成边数据
+        forceSimulation.force("link")
+            .links(graph4_edges)
+            .distance(function(d){//每一边的长度
+                return d.value*100;
+            })
+
+        //设置图形的中心位置
+        forceSimulation.force("center")
+            .x(graph4_width/2)
+            .y(graph4_height/2);
+
+        //在浏览器的控制台输出
+        console.log(graph4_nodes);
+        console.log(graph4_edges);
+
+        //绘制边
+        var graph4_links = graph4_g.append("g")
+            .selectAll("line")
+            .data(graph4_edges)
+            .enter()
+            .append("line")
+            .attr("stroke",function(d,i){
+                return graph4_colorScale(d.value);   //边的颜色
+            })
+            .attr("stroke-width",1);
+
+        //建立用来放在每个节点和对应文字的分组<g>
+        var graph4_gs = graph4_g.selectAll(".circleText")
+            .data(graph4_nodes)
+            .enter()
+            .append("g")
+            .attr("transform",function(d,i){
+                var cirX = d.x;
+                var cirY = d.y;
+                return "translate("+cirX+","+cirY+")";
+            })
+            .call(d3.drag()
+                .on("start",graph4_started)
+                .on("drag",graph4_dragged)
+                .on("end",graph4_ended)
+            )
+
+
+         //绘制节点
+         graph4_gs.append("circle")
+           // .attr("r",20)
+            .attr("r",function (d,i) {    //圆圈半径
+                return d.group*15;
+            })
+            .attr("fill",function(d,i){
+                //return colorScale(i);
+                return graph4_colorScale(d.group);
+            })
+            .on("click",function(d,i){
+                d3.select(this).attr("fill","yellow");
+                document.getElementById("nodeid").innerHTML=("id:whois_Name_d93c941eef173511e77515af6861025e9a2a52d597e27bf1825961c2690e66cd");
+                document.getElementById("nodename").innerHTML=("name:Domxxxxxmin");
+                document.getElementById("nodetype").innerHTML=("type:Whois_Name");
+                document.getElementById("nodeindustry").innerHTML=("industry:['A']");
+            })
+
+        //文字
+        graph4_gs.append("text")
+            /*.attr("x",-10)
+            .attr("y",-20)
+            .attr("dy",10)
+            .attr("x",-25)
+            .attr("y",-5)
+            .attr("dy",10)
+            .text(function(d){
+                return d.name;
+            })
+
+
+        function ticked(){
+            graph4_links
+                .attr("x1",function(d){return d.source.x;})
+                .attr("y1",function(d){return d.source.y;})
+                .attr("x2",function(d){return d.target.x;})
+                .attr("y2",function(d){return d.target.y;});
+
+            graph4_gs
+                .attr("transform",function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+        }
+
+        function graph4_started(d){
+            if(!d3.event.active){
+                forceSimulation.alphaTarget(0.8).restart()
+            }
+            d.fx = d.x;
+            d.fy = d.y;
+        }
+        function graph4_dragged(d){
+            d.fx = d3.event.x;
+            d.fy = d3.event.y;
+        }
+        function graph4_ended(d){
+            if(!d3.event.active){
+                forceSimulation.alphaTarget(0);
+            }
+            d.fx = null;
+            d.fy = null;
+        }
+        graph4_g.call(d3.zoom()
+            .scaleExtent([0.01, 20])
+            .on('zoom', () => {
+                graph4_g.attr('transform', d3.event.transform)
+            })
+        );
+    }
 </script>
-<script src="../static/data/data_info1/data1.js"></script>
-<script src="../static/js/data_info_view1.js"></script>
-<script src="../static/js/data_info_view2.js"></script>
-<script src="../static/js/data_info_view3.js"></script>
-<script src="../static/js/subgraph_info1_view.js"></script>
-<!--<script src="../static/js/subgraph_info2_view.js"></script>-->
 </body>
 </html>
