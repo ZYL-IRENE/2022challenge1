@@ -1,22 +1,23 @@
 var info6_graph = echarts.init(document.getElementById('info6-2'));
 var info7_graph = echarts.init(document.getElementById('info7-2'));
+var graph_colors = ['#91C7AE', '#749F83', '#CA8622', '#BDA29A', '#6E7074','#546570','#D7E0E8','#C23531']
+var industry_color = ['#000000','#464646','#696969','#808080','#A9A9A9','#C0C0C0','#D3D3D3','	#DCDCDC','#F5F5F5']
 info6_option = {
     tooltip: {
         show: true,
-        trigger: 'item',
-        formatter: '{a} <br/>{b}: {c} ({d}%)'
+        trigger: 'item'
+//        formatter: '{a} <br/>{b}: {c} ({d}%)'
     },
     legend: {
-    data: [
- 'Domain', 'IP', 'Cert', 'Whois_Name', 'Whois_Phone', 'Whois_Email', 'IP_C', 'ASN'
-    ]
+        data: ['Domain', 'IP', 'Cert', 'Whois_Name', 'Whois_Phone', 'Whois_Email', 'IP_C', 'ASN']
       },
   series: [
     {
       name: 'link',
       type: 'pie',
-      selectedMode: 'single',
-      radius: [0, '30%'],
+//      color: ['#20B2AA', '#008B8B', '#DAA520', '#DEB887', '#BC8F8F','#A9A9A9','#DCDCDC','#CD5C5C'],
+//      selectedMode: 'single',
+      radius: [0, '20%'],
       label: {
         position: 'inner',
         fontSize: 14
@@ -30,7 +31,26 @@ info6_option = {
     {
       name: 'node',
       type: 'pie',
-      radius: ['45%', '60%'],
+//      color: graph_colors,
+      radius: ['25%', '35%'],
+      label: {
+        show:false,
+      },
+      labelLine: {
+        show:false,
+        length: 0
+      },
+      top:20,
+      data: []
+    },
+    {
+      name: 'type',
+      type: 'pie',
+      color: industry_color,
+      radius: ['40%', '55%'],
+      label: {
+        fontSize:14,
+      },
       labelLine: {
         length: 1
       },
@@ -51,15 +71,14 @@ info7_option ={
     tooltip: {},
     legend: [
       {
-        data: [
- 'Domain', 'IP', 'Cert', 'Whois_Name', 'Whois_Phone', 'Whois_Email', 'IP_C', 'ASN'
-    ]
+        data: ['Domain', 'IP', 'Cert', 'Whois_Name', 'Whois_Phone', 'Whois_Email', 'IP_C', 'ASN']
       }
     ],
     series: [
       {
         name: 'KeyLines',
         type: 'graph',
+        color: graph_colors,
         layout: 'force',
         data: [],
         links: [],
@@ -85,6 +104,10 @@ $.get('/subgraph-info1-view').done(function (info6_data){
     {
         name:'node',
         data:info6_data.node[0]
+    },
+    {
+        name:'type',
+        data:info6_data.type[0]
     }]
     });
 });
@@ -115,6 +138,10 @@ $('#graphTypes').on('change',function(){
                     {
                         name:'node',
                         data:info6_data.node[index]
+                    },
+                    {
+                        name:'type',
+                        data:info6_data.type[index]
                     }]
                     });
             },
