@@ -162,6 +162,9 @@ var info3_option = {
     visualMap: {
         min: 0,
         max: 1,
+        inRange: {
+            color: ['#ebedf0', '#c6e48b', '#7bc96f', '#239a3b', '#196027']
+        },
         calculable: true,
         left: 'left',
         bottom: '15%'
