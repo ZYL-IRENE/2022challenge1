@@ -16,7 +16,9 @@ def get_data_info6():
         file_path2 = path + '/' + str(i + 1) + '_link_type.csv'
         pd_link_types = pd.read_csv(file_path2)
         res_link[i] = pd_link_types['num'].values.tolist()
-    return res_node,res_link
+    res_type = {0:[12,9,2,0,12,0,5,0,0],1:[0,1,0,0,0,0,0,0,0],2:[470,86,3,0,0,0,26,0,2],3:[143,63,4,0,0,0,0,0,0],4:[66,119,1,0,0,0,4,0,0]}
+    # print(res_node)
+    return res_node,res_link,res_type
 get_data_info6()
 
 def get_data_info7():
