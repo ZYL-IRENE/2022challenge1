@@ -1,5 +1,6 @@
 var info2_graph = echarts.init(document.getElementById('info2-2'));
-var info2_colors = ['#3A85D3', '#5AD8A6', '#5470c6', '#008000', '#61a0a8'];
+// var info2_colors = ['#3A85D3', '#5AD8A6', '#5470c6', '#008000', '#61a0a8'];
+var info2_colors = ['#749F83', '#65757D'];
 
 var info2_option = {
     color: info2_colors,
@@ -10,18 +11,22 @@ var info2_option = {
         }
     },
     legend: {
-        data: ['node', 'link'], 
+        data: ['node', 'link'],
+        top:'0%'
     },
     grid: {
         left: '3%', 
         right: '4%', 
-        bottom: '15%', 
+        bottom: '15%',
+        top:'15%',
         containLabel: true 
     },
+    textStyle: '13',
 
     dataZoom: {
         type: 'slider',
-        bottom: '10%',
+        bottom: '5%',
+        height: '20px',
         start:0,
         end:60 
     },

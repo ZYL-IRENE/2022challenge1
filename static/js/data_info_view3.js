@@ -111,21 +111,24 @@ var info3_option = {
     title: {
         text: '黑色产业分析',
         left: 'center',
+        show: false
     },
     tooltip: {
         position: 'top'
     },
     animation: false,
     grid: {
-        height: '50%',
-        y: '10%'
+        height: '60%',
+        right: '4%',
+        top: '7%'
     },
     xAxis: {
         type: 'category',
         data: graph3_hours,
         splitArea: {
             show: true
-        }
+        },
+        axisLabel:{rotate:45}
     },
     yAxis: {
         type: 'category',
@@ -134,21 +137,23 @@ var info3_option = {
             show: true
         }
     },
-    dataZoom: [{
-        type: 'slider',
-        show: true,
-        xAxisIndex: [0],
-        bottom: '20%',
-        start: 1,
-        end: 50
-    }, {
-        type: 'slider',
-        show: true,
-        yAxisIndex: [0],
-        left: '93%',
-        start: 1,
-        end: 100
-    }, {
+    dataZoom: [
+    //     {
+    //     type: 'slider',
+    //     show: true,
+    //     xAxisIndex: [0],
+    //     bottom: '20%',
+    //     start: 1,
+    //     end: 50
+    // }, {
+    //     type: 'slider',
+    //     show: true,
+    //     yAxisIndex: [0],
+    //     left: '93%',
+    //     start: 1,
+    //     end: 100
+    // },
+        {
         type: 'inside',
         xAxisIndex: [0],
         start: 1,
@@ -163,11 +168,15 @@ var info3_option = {
         min: 0,
         max: 1,
         inRange: {
-            color: ['#ebedf0', '#c6e48b', '#7bc96f', '#239a3b', '#196027']
+            // color: ['#ebedf0', '#c6e48b', '#7bc96f', '#239a3b', '#196027']
+            color: ['#cfd8dc','#749F83']
         },
         calculable: true,
-        left: 'left',
-        bottom: '15%'
+        orient: 'horizontal',
+        left: 'center',
+        bottom: '10%',
+        itemWidth:'10px',
+        handleSize:'10%'
     },
     series: [{
         name: 'Punch Card',
@@ -181,7 +190,7 @@ var info3_option = {
         itemStyle: {
             emphasis: {
                 shadowBlur: 10,
-                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                shadowColor: 'rgba(0, 0, 0, 0.3)'
             }
         }
     }]
