@@ -141,20 +141,37 @@
     }
     // Domain_c58c149eec59bb14b0c102a0f303d4c20366926b5c3206555d2937474124beb9
     function knowledgegraph(res){
-        original_nodes = res.nodes;
-        original_links = res.links;
+        var original_nodes = res.nodes;
+        var original_links = res.links;
 
+        var type_dict = {
+            'IP':'IP',
+            'IP_C':'_C',
+            'Domain':'D',
+            'Cert':'C',
+            'ASN':'A',
+            'Whois_Phone':'P',
+            'Whois_Name':'N',
+            'Whois_Email':'E',
+        };
+        var color_dict = {
+            'Domain':'#91C7AE',
+            'IP':'#749F83',
+            'Cert':'#CA8622',
+            'Whois_Name':'#BDA29A',
+            'Whois_Phone':'#6E7074',
+            'Whois_Email':'#546570',
+            'IP_C':'#D7E0E8',
+            'ASN':'#C23531'};
+        var key_relation = ['r_cert','r_subdomain','r_request_jump','r_dns_a'];
         var nodes = [];
         var node_index_dict = [];
         var links = [];
+        nodes_R = [];
         for(var i=0;i<original_nodes.length;i++){
             var node = original_nodes[i];
             node_index_dict[node.id] = i;
-            nodes.push({
-                'name':node.type,
-                'group':1,
-                'id':node.id,
-            });
+            nodes_R.push(10);
         }
         for(var i=0;i<original_links.length;i++){
             var index1 = node_index_dict[original_links[i].source];
@@ -165,9 +182,23 @@
                 relation:original_links[i].relation,
                 value:1,
             });
+            nodes_R[index1] ++;
+            nodes_R[index2] ++;
         }
-        console.log(nodes[0]);
-        console.log(links[0]);
+        for(var i=0;i<nodes_R.length;i++){
+            nodes_R[i] = Math.log10(nodes_R[i]);
+        }
+        scalerR = d3.scaleLinear().domain(nodes_R).range([10,20]);
+        for(var i=0;i<original_nodes.length;i++){
+           var node = original_nodes[i];
+            nodes.push({
+                'name':node.type,
+                'group':1,
+                'id':node.id,
+                'R':scalerR(nodes_R[i]),
+                'index':i,
+            });
+        }
         var graph4_div = document.getElementById('subgraph-view');
         var graph4_width = graph4_div.clientWidth;
         var graph4_height = graph4_div.clientHeight;
@@ -181,8 +212,15 @@
         var graph4_g = graph4_svg.append("g")
             .attr("transform","translate("+graph4_marge.top+","+graph4_marge.left+")",'id','maingroup');
 
-        var graph4_nodes = nodes;
-        var graph4_edges = links;
+        // 悬浮提示框
+        var tooltip = d3.select("g")
+        .append("div")
+        .attr("class","tooltip")
+        .style("opacity",0.0);
+
+        // 图中数据
+        graph4_nodes = nodes;
+        graph4_edges = links;
 
         //设置一个color的颜色比例尺，为了让不同的扇形呈现不同的颜色
         var graph4_colorScale = d3.scaleOrdinal()
@@ -192,8 +230,9 @@
 
         var forceSimulation = d3.forceSimulation()
             .force("link",d3.forceLink())
-            .force("charge",d3.forceManyBody())//万有引力
-            .force("center",d3.forceCenter());
+            .force("charge",d3.forceManyBody())
+            .force("center",d3.forceCenter())
+            .force('collide', d3.forceCollide().radius(() => 10));
 
         //生成节点数据
         forceSimulation.nodes(graph4_nodes)
@@ -212,20 +251,24 @@
             .x(graph4_width/2)
             .y(graph4_height/2);
 
-        //在浏览器的控制台输出
-        console.log(graph4_nodes);
-        console.log(graph4_edges);
-
         //绘制边
         var graph4_links = graph4_g.append("g")
             .selectAll("line")
             .data(graph4_edges)
             .enter()
             .append("line")
-            .attr("stroke",function(d,i){
-                return graph4_colorScale(d.value);   //边的颜色
+            .attr("stroke",function(d){
+                if(key_relation.indexOf(d.relation) != -1){
+                    return 'gray';
+                }
+                return '#78909c';
             })
-            .attr("stroke-width",1);
+            .attr("stroke-width",function(d){
+                if(key_relation.indexOf(d.relation) != -1){
+                    return 2;
+                }
+                return 0.5;
+            });
 
         //建立用来放在每个节点和对应文字的分组<g>
         var graph4_gs = graph4_g.selectAll(".circleText")
@@ -236,43 +279,51 @@
                 var cirX = d.x;
                 var cirY = d.y;
                 return "translate("+cirX+","+cirY+")";
-            })
-            .call(d3.drag()
-                .on("start",graph4_started)
-                .on("drag",graph4_dragged)
-                .on("end",graph4_ended)
-            )
+            });
 
 
          //绘制节点
          graph4_gs.append("circle")
-           // .attr("r",20)
-            .attr("r",function (d,i) {    //圆圈半径
-                return d.group*15;
+            .attr("r",function (d,i) {
+                return d.R;
             })
-            .attr("fill",function(d,i){
-                //return colorScale(i);
-                return graph4_colorScale(d.group);
+            .attr("fill", function(d){
+                return color_dict[d.name];
             })
-            .on("click",function(d,i){
-                d3.select(this).attr("fill","yellow");
-                document.getElementById("nodeid").innerHTML=("id:whois_Name_d93c941eef173511e77515af6861025e9a2a52d597e27bf1825961c2690e66cd");
-                document.getElementById("nodename").innerHTML=("name:Domxxxxxmin");
-                document.getElementById("nodetype").innerHTML=("type:Whois_Name");
-                document.getElementById("nodeindustry").innerHTML=("industry:['A']");
-            })
+            .attr('stroke', 'black')
+            .attr('stroke-width', 2)
+            .attr('id', function(d){
+                return 'node'+d.index;
+            });
 
         //文字
         graph4_gs.append("text")
-            /*.attr("x",-10)
-            .attr("y",-20)
-            .attr("dy",10)
-            .attr("x",-25)
-            .attr("y",-5)
-            .attr("dy",10)
-            .text(function(d){
-                return d.name;
+            .attr("dx",function(d){
+                return -d.R*0.35;
             })
+            .attr("dy",function(d){
+                return d.R*0.4;
+            })
+            .attr('font-size', function(d){
+                return d.R;
+            })
+            .text(function(d){
+                return type_dict[d.name];
+            })
+            .attr('id', function(d){
+                return 'text'+d.index;
+            });
+
+        d3.selectAll('circle')
+        .each(function(d,i){
+            d3.select(this)
+            .on('click', function(d,i){
+                tooltip.html('123')
+                .style("left", (d3.event.pageX + 30) + "px")
+                .style("top", (d3.event.pageY + 30) + "px")
+                .style("opacity",0.75);
+            });
+        });
 
 
         function ticked(){
@@ -293,18 +344,7 @@
             d.fx = d.x;
             d.fy = d.y;
         }
-        function graph4_dragged(d){
-            d.fx = d3.event.x;
-            d.fy = d3.event.y;
-        }
-        function graph4_ended(d){
-            if(!d3.event.active){
-                forceSimulation.alphaTarget(0);
-            }
-            d.fx = null;
-            d.fy = null;
-        }
-        graph4_g.call(d3.zoom()
+        graph4_svg.call(d3.zoom()
             .scaleExtent([0.01, 20])
             .on('zoom', () => {
                 graph4_g.attr('transform', d3.event.transform)
