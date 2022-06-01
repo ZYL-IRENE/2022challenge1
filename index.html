@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1"/>
+
+    <title>黑灰网络子图资产分析</title>
+    <script src="../static/jslib/echarts.min.js"></script>
+    <script src="../static/jslib/jquery.min.js"></script>
+    <script src="../static/jslib/bootstrap.min.js"></script>
+    <script src="../static/jslib/bootstrap-slider.min.js"></script>
+    <script src="../static/jslib/d3.js"></script>
+    <link rel="stylesheet" href="../static/css/main.css">
+</head>
+<body>
+    <div id="content">
+        <div id="content-left">
+            <div id="data-info1-view">
+
+                <div id="info1-1">
+                    网络节点度分布
+                    <select id="info1-1-words">
+                        <option>ALL</option>
+                        <option>Domain</option>
+                        <option>IP</option>
+                        <option>IP_C</option>
+                        <option>ASN</option>
+                        <option>Cert</option>
+                        <option>Whois_Name</option>
+                        <option>Whois_Phone</option>
+                        <option>Whois_Email</option>
+                    </select>
+                </div>
+                <div id="info1-2"></div>
+            </div>
+            <div id="data-info2-view">
+                <div id="info2-1">
+                    <p>子图规模概览</p>
+                </div>
+                <div id="info2-2"></div>
+            </div>
+            <div id="data-info3-view" style="position:relative">
+                <div id="info3-1">
+                    <p>子图产业类型概览</p>
+                </div>
+                <div id="info3-2"></div>
+            </div>
+        </div>
+        <div id="content-middle">
+            <div id="subgraph-view">
+                 子图详细信息
+            </div>
+            <div id="subgraph-control-view">
+
+              <div style="height: 100%; width: 60%; box-sizing: border-box; border-right: var(--border-color) 1px solid; float: left">
+                <br><h3 style="font-weight:bold;font-size:15px;border-radius:10px;border-color:white;padding: 6px">请输入：</h3>
+                <form method="get" id="id_name" onsubmit="return false">
+                  <h4 style="text-indent: 2em;font-weight:bold;font-size:13px;color: gray;border-radius:10px;border-color:white;padding: 6px">ID：<input type="text" name="id" id="id"></h4>
+                  <h4 style="text-indent: 2em;"> <input type="submit" value="确认/submit" onclick="login()" style="font-weight:bold;font-size:13px;color: gray;border-radius:10px;border-color:white;padding: 8px"></h4>
+                </form>
+              </div>
+              <div style="height: 100%; width: 40%; box-sizing: border-box; float: left">
+                  <h3 style="font-weight:bold;font-size:12px;border-radius:10px;border-color:white;padding: 6px">是否包括非黑灰网络资产：</h3>
+                  <select id="is_contain_empty_industry" name="is_contain_empty_industry" value="True"
+                          style="font-weight:bold;font-size:14px;color: gray;border-radius:10px;border-color:white;padding: 8px">
+                      <option value="True">是</option>
+                      <option value="False">否</option>
+                  </select>
+                  <h3 style="font-weight:bold;font-size:12px;border-radius:10px;border-color:white;padding: 6px">过滤后cert类型节点邻边数：</h3>
+                  <select id="cert_n" name="cert_n" value="100"
+                          style="font-weight:bold;font-size:14px;color: gray;border-radius:10px;border-color:white;padding: 8px">
+                      <option value="50">50</option>
+                      <option value="100" selected="selected">100</option>
+                      <option value="200">200</option>
+                  </select>
+                  <h3 style="font-weight:bold;font-size:12px;border-radius:10px;border-color:white;padding: 6px">判断核心网络资产参数：</h3>
+                  <select id="center_ratio" name="center_ratio" value="0.25"
+                          style="font-weight:bold;font-size:14px;color: gray;border-radius:10px;border-color:white;padding: 8px">
+                      <option value="0.2">0.2</option>
+                      <option value="0.25" selected="selected">0.25</option>
+                      <option value="0.3">0.3</option>
+                  </select>
+              </div>
+
+            </div>
+        </div>
+        <div id="content-right">
+            <div id="subgraph-info1-view">
+                <div id="info6-1">
+                    <p>子图资产信息</p>
+                    <div id="graphList" style="position:absolute;right:20px;top:10px;z-index: 1">
+                            <select name="graphTypes" id="graphTypes">
+                                <option value="Subgraph1-1">子图1-1</option>
+                                <option value="Subgraph1-2">子图1-2</option>
+                                <option value="Subgraph1-3">子图1-3</option>
+                                <option value="Subgraph1-4">子图1-4</option>
+                                <option value="Subgraph1-5">子图1-5</option>
+                                <option value="Subgraph1-1">子图2-1</option>
+                                <option value="Subgraph1-2">子图2-2</option>
+                                <option value="Subgraph1-3">子图2-3</option>
+                                <option value="Subgraph1-4">子图2-4</option>
+                                <option value="Subgraph1-5">子图2-5</option>
+                            </select>
+                    </div>
+                </div>
+                <div id="info6-2"></div>
+            </div>
+            <div id="subgraph-info2-view">
+                <div id="info7-1">
+                    <p>核心资产与关键链路</p>
+                </div>
+                <div id="info7-2"></div>
+            </div>
+        </div>
+    </div>
+<script src="../static/data/data_info1/data1.js"></script>
+<script src="../static/js/data_info_view1.js"></script>
+<script src="../static/js/data_info_view2.js"></script>
+<script src="../static/js/data_info_view3.js"></script>
+<script src="../static/js/subgraph_info1_view.js"></script>
+<!--<script src="../static/js/subgraph_info2_view.js"></script>-->
+<script>
+    function login(){
+        var a = $("#is_contain_empty_industry").val();
+        var b = $("#cert_n").val();
+        var c = $("#center_ratio").val();
+        $.ajax({
+            type: "get",
+            url: '/register',
+            data: {id: $("#id").serialize(), is_contain_empty_industry: a, cert_n: b, ratio: c},
+            success: function (res){
+                knowledgegraph(res);
+            },
+            error: function(){
+                alert('error');
+            }
+
+        });
+    }
+    // Domain_c58c149eec59bb14b0c102a0f303d4c20366926b5c3206555d2937474124beb9
+    function knowledgegraph(res){
+        var original_nodes = res.nodes;
+        var original_links = res.links;
+
+        var type_dict = {
+            'IP':'IP',
+            'IP_C':'_C',
+            'Domain':'D',
+            'Cert':'C',
+            'ASN':'A',
+            'Whois_Phone':'P',
+            'Whois_Name':'N',
+            'Whois_Email':'E',
+        };
+        var color_dict = {
+            'Domain':'#91C7AE',
+            'IP':'#749F83',
+            'Cert':'#CA8622',
+            'Whois_Name':'#BDA29A',
+            'Whois_Phone':'#6E7074',
+            'Whois_Email':'#546570',
+            'IP_C':'#D7E0E8',
+            'ASN':'#C23531'};
+        var key_relation = ['r_cert','r_subdomain','r_request_jump','r_dns_a'];
+        var nodes = [];
+        var node_index_dict = [];
+        var links = [];
+        nodes_R = [];
+        for(var i=0;i<original_nodes.length;i++){
+            var node = original_nodes[i];
+            node_index_dict[node.id] = i;
+            nodes_R.push(10);
+        }
+        for(var i=0;i<original_links.length;i++){
+            var index1 = node_index_dict[original_links[i].source];
+            var index2 = node_index_dict[original_links[i].target];
+            links.push({
+                source:index1,
+                target:index2,
+                relation:original_links[i].relation,
+                value:1,
+            });
+            nodes_R[index1] ++;
+            nodes_R[index2] ++;
+        }
+        for(var i=0;i<nodes_R.length;i++){
+            nodes_R[i] = Math.log10(nodes_R[i]);
+        }
+        scalerR = d3.scaleLinear().domain(nodes_R).range([10,20]);
+        for(var i=0;i<original_nodes.length;i++){
+           var node = original_nodes[i];
+            nodes.push({
+                'name':node.type,
+                'group':1,
+                'id':node.id,
+                'R':scalerR(nodes_R[i]),
+                'index':i,
+            });
+        }
+        var graph4_div = document.getElementById('subgraph-view');
+        var graph4_width = graph4_div.clientWidth;
+        var graph4_height = graph4_div.clientHeight;
+        var graph4_svg = d3.select("#subgraph-view")
+            .append("svg")
+            .attr("width",graph4_width)
+            .attr("height",graph4_height);
+
+        var graph4_marge = {top:10,bottom:10,left:10,right:10}
+
+        var graph4_g = graph4_svg.append("g")
+            .attr("transform","translate("+graph4_marge.top+","+graph4_marge.left+")",'id','maingroup');
+
+        // 悬浮提示框
+        var tooltip = d3.select("g")
+        .append("div")
+        .attr("class","tooltip")
+        .style("opacity",0.0);
+
+        // 图中数据
+        graph4_nodes = nodes;
+        graph4_edges = links;
+
+        //设置一个color的颜色比例尺，为了让不同的扇形呈现不同的颜色
+        var graph4_colorScale = d3.scaleOrdinal()
+            .domain(d3.range(graph4_nodes.length))
+            .range(d3.schemeCategory10);
+
+
+        var forceSimulation = d3.forceSimulation()
+            .force("link",d3.forceLink())
+            .force("charge",d3.forceManyBody())
+            .force("center",d3.forceCenter())
+            .force('collide', d3.forceCollide().radius(() => 10));
+
+        //生成节点数据
+        forceSimulation.nodes(graph4_nodes)
+            .on("tick",ticked)
+       
+
+        //生成边数据
+        forceSimulation.force("link")
+            .links(graph4_edges)
+            .distance(function(d){//每一边的长度
+                return d.value*100;
+            })
+
+        //设置图形的中心位置
+        forceSimulation.force("center")
+            .x(graph4_width/2)
+            .y(graph4_height/2);
+
+        //绘制边
+        var graph4_links = graph4_g.append("g")
+            .selectAll("line")
+            .data(graph4_edges)
+            .enter()
+            .append("line")
+            .attr("stroke",function(d){
+                if(key_relation.indexOf(d.relation) != -1){
+                    return 'gray';
+                }
+                return '#78909c';
+            })
+            .attr("stroke-width",function(d){
+                if(key_relation.indexOf(d.relation) != -1){
+                    return 2;
+                }
+                return 0.5;
+            });
+
+        //建立用来放在每个节点和对应文字的分组<g>
+        var graph4_gs = graph4_g.selectAll(".circleText")
+            .data(graph4_nodes)
+            .enter()
+            .append("g")
+            .attr("transform",function(d,i){
+                var cirX = d.x;
+                var cirY = d.y;
+                return "translate("+cirX+","+cirY+")";
+            });
+
+
+         //绘制节点
+         graph4_gs.append("circle")
+            .attr("r",function (d,i) {
+                return d.R;
+            })
+            .attr("fill", function(d){
+                return color_dict[d.name];
+            })
+            .attr('stroke', 'black')
+            .attr('stroke-width', 2)
+            .attr('id', function(d){
+                return 'node'+d.index;
+            })
+            .on("mouseover", mouseover)
+            .on("mousemove", mousemove)
+            .on("mouseleave", mouseleave)
+
+
+        //文字
+        graph4_gs.append("text")
+            .attr("dx",function(d){
+                return -d.R*0.35;
+            })
+            .attr("dy",function(d){
+                return d.R*0.4;
+            })
+            .attr('font-size', function(d){
+                return d.R;
+            })
+            .text(function(d){
+                return type_dict[d.name];
+            })
+            .attr('id', function(d){
+                return 'text'+d.index;
+            });
+
+        d3.selectAll('circle')
+        .each(function(d,i){
+            d3.select(this)
+            .on('click', function(d,i){
+                tooltip.html('123')
+                .style("left", (d3.event.pageX + 30) + "px")
+                .style("top", (d3.event.pageY + 30) + "px")
+                .style("opacity",0.75);
+            });
+        });
+
+
+        //设置悬浮框交互
+
+        tooltip = d3.select("svg")
+                        .append("div")
+                        .style("opacity", 0)
+                        .attr("class", "tooltip")
+                        .style("background-color", "white")
+                        .style("border", "solid")
+                        .style("border-width", "2px")
+                        .style("border-radius", "5px")
+                        .style("padding", "5px")
+
+        var mouseover = function(d) {
+            tooltip.style("opacity", 1)
+            d3.select(this)
+            .style("stroke", "black")
+            .style("opacity", 1)
+        }
+  
+        var mousemove = function(d) {
+            tooltip.html("name: " + d.name)
+        }
+ 
+        var mouseleave = function(d) {
+            tooltip.style("opacity", 0)
+            d3.select(this)
+            .style("stroke", "none")
+            .style("opacity", 0.8)
+        } 
+
+        d3.selectAll('circle')
+            .on("mouseover", mouseover)
+            .on("mousemove", mousemove)
+            .on("mouseleave", mouseleave)
+        
+
+
+        function ticked(){
+            graph4_links
+                .attr("x1",function(d){return d.source.x;})
+                .attr("y1",function(d){return d.source.y;})
+                .attr("x2",function(d){return d.target.x;})
+                .attr("y2",function(d){return d.target.y;});
+
+            graph4_gs
+                .attr("transform",function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+        }
+
+        function graph4_started(d){
+            if(!d3.event.active){
+                forceSimulation.alphaTarget(0.8).restart()
+            }
+            d.fx = d.x;
+            d.fy = d.y;
+        }
+        graph4_svg.call(d3.zoom()
+            .scaleExtent([0.01, 20])
+            .on('zoom', () => {
+                graph4_g.attr('transform', d3.event.transform)
+            })
+        );
+    }
+</script>
+</body>
+</html>
