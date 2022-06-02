@@ -53,17 +53,37 @@
                  子图详细信息
             </div>
             <div id="subgraph-control-view">
-
               <div style="height: 100%; width: 60%; box-sizing: border-box; border-right: var(--border-color) 1px solid; float: left">
-                <!-- <div id="legend" style="height: 35%; width: 100%; box-sizing: border-box; float: left">123</div> -->
-                <!-- <div style="height: 65%; width: 100%; box-sizing: border-box; border-top: var(--border-color) 1px solid; float: left"> -->
-                <br><h3 style="font-weight:bold;font-size:13px;border-radius:10px;border-color:white;padding: 6px">请输入：</h3>
-                <form method="get" id="id_name" onsubmit="return false">
-                  <h4 style="text-indent: 2em;font-weight:bold;font-size:13px;color: gray;border-radius:10px;border-color:white;padding: 6px">ID：<input type="text" name="id" id="id"></h4>
-                  <h4 style="text-indent: 2em;"> <input type="submit" value="确认/submit" onclick="login()" style="font-weight:bold;font-size:13px;color: gray;border-radius:10px;border-color:white;padding: 8px"></h4>
-                </form>
-            <!-- </div> -->
+                <div id = "info5-1">
+                    <br><h3 style="font-weight:bold;font-size:15px;color: gray;border-radius:10px;border-color:white;padding: 6px">请输入：</h3>
+                    <form method="get" id="id_name" onsubmit="return false">
+                      <h4 style="text-indent: 2em;font-weight:bold;font-size:13px;color: gray;border-radius:10px;border-color:white;padding: 6px">ID：<input type="text" name="id" id="id"></h4>
+                      <h4 style="text-indent: 2em;"> <input type="submit" value="确认/submit" onclick="login()" style="font-weight:bold;font-size:13px;color: gray;border-radius:10px;border-color:white;padding: 8px"></h4>
+                    </form>
+                </div>
+                <div id = "info5-2">
+                    <div id="graphList">
+                        <br><h3 style="font-weight:bold;font-size:15px;color: gray;border-radius:10px;border-color:white;padding: 6px">请选择：</h3>
+                        <h4 style="text-indent: 2em;font-weight:bold;font-size:13px;color: gray;border-radius:10px;border-color:white;padding: 6px">子图序号：
+                            <select name="graphTypes" id="graphTypes">
+                                <option value="Subgraph1">子图1</option>
+                                <option value="Subgraph2">子图2</option>
+                                <option value="Subgraph3">子图3</option>
+                                <option value="Subgraph4">子图4</option>
+                                <option value="Subgraph5">子图5</option>
+                                <option value="Subgraph6">子图6</option>
+                                <option value="Subgraph7">子图7</option>
+                                <option value="Subgraph8">子图8</option>
+                                <option value="Subgraph9">子图9</option>
+                                <option value="Subgraph10">子图10</option>
+                                <option value="Subgraph11">子图11</option>
+                            </select>
+                        </h4>
+                    </div>
+                    </div>
               </div>
+                
+              
               <div style="height: 100%; width: 40%; box-sizing: border-box; float: left">
                   <h3 style="font-weight:bold;font-size:12px;border-radius:10px;border-color:white;padding: 6px">是否包括非黑灰网络资产：</h3>
                   <select id="is_contain_empty_industry" name="is_contain_empty_industry" value="True"
@@ -97,22 +117,14 @@
             <div id="subgraph-info1-view">
                 <div id="info6-1">
                     <p>子图资产信息</p>
-                    <div id="graphList" style="position:absolute;right:20px;top:10px;z-index: 1">
-                            <select name="graphTypes" id="graphTypes">
-                                <option value="Subgraph1-1">子图1-1</option>
-                                <option value="Subgraph1-2">子图1-2</option>
-                                <option value="Subgraph1-3">子图1-3</option>
-                                <option value="Subgraph1-4">子图1-4</option>
-                                <option value="Subgraph1-5">子图1-5</option>
-                                <option value="Subgraph1-1">子图2-1</option>
-                                <option value="Subgraph1-2">子图2-2</option>
-                                <option value="Subgraph1-3">子图2-3</option>
-                                <option value="Subgraph1-4">子图2-4</option>
-                                <option value="Subgraph1-5">子图2-5</option>
-                            </select>
-                    </div>
-                </div>
-                <div id="info6-2"></div>
+                    <div id="subgraph-info1-view">
+                        <div id="info6-1">
+                            <p>子图列表</p>
+                        </div>
+                    <div id="info6-2"></div>
+                   </div>
+               </div>
+               <div id="info6-2"></div>
             </div>
             <div id="subgraph-info2-view">
                 <div id="info7-1">
