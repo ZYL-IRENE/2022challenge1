@@ -180,7 +180,7 @@ var info3_option = {
         max: 1,
         inRange: {
             // color: ['#ebedf0', '#c6e48b', '#7bc96f', '#239a3b', '#196027']
-            color: ['#cfd8dc','#749F83']
+            color: ['#99cc99','#009933']
         },
         calculable: true,
         orient: 'horizontal',
