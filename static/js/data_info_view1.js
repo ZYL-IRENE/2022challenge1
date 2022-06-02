@@ -30,6 +30,14 @@ info1_option = {
     {
         data: [],
         type: 'line',
+        lineStyle:{
+            color:'#91c7ae'
+        },
+        itemStyle:{
+            normal:{
+                color:'#91c7ae'
+            }
+        },
         label:{
             show: true,
             formatter: function(args){
@@ -42,7 +50,7 @@ info1_option = {
                 return "";
             },
             position:[0, -5],
-            color:'blue',
+            color:'black',
             fontSize: 12,
         },
     }]
