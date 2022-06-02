@@ -197,11 +197,17 @@
                 'id':node.id,
                 'R':scalerR(nodes_R[i]),
                 'index':i,
+                'type':node.name,
+                'industry':node.industry,
+
             });
         }
         var graph4_div = document.getElementById('subgraph-view');
         var graph4_width = graph4_div.clientWidth;
         var graph4_height = graph4_div.clientHeight;
+
+        d3.select("#subgraph-view").select("svg").remove();
+
         var graph4_svg = d3.select("#subgraph-view")
             .append("svg")
             .attr("width",graph4_width)
@@ -209,14 +215,9 @@
 
         var graph4_marge = {top:10,bottom:10,left:10,right:10}
 
+
         var graph4_g = graph4_svg.append("g")
             .attr("transform","translate("+graph4_marge.top+","+graph4_marge.left+")",'id','maingroup');
-
-        // 悬浮提示框
-        var tooltip = d3.select("g")
-        .append("div")
-        .attr("class","tooltip")
-        .style("opacity",0.0);
 
         // 图中数据
         graph4_nodes = nodes;
@@ -318,46 +319,44 @@
                 return 'text'+d.index;
             });
 
-        d3.selectAll('circle')
-        .each(function(d,i){
-            d3.select(this)
-            .on('click', function(d,i){
-                tooltip.html('123')
-                .style("left", (d3.event.pageX + 30) + "px")
-                .style("top", (d3.event.pageY + 30) + "px")
-                .style("opacity",0.75);
-            });
-        });
-
 
         //设置悬浮框交互
 
-        tooltip = d3.select("svg")
+        tooltip = d3.select("body")
                         .append("div")
-                        .style("opacity", 0)
-                        .attr("class", "tooltip")
-                        .style("background-color", "white")
-                        .style("border", "solid")
-                        .style("border-width", "2px")
-                        .style("border-radius", "5px")
-                        .style("padding", "5px")
+                        // .style("opacity", 0)
+                        .attr("class", "tooltip");
+                        // .style("background-color", "yellow")
+                        // .style("border", "solid")
+                        // .style("border-width", "2px")
+                        // .style("border-radius", "5px")
+                        // .style("padding", "5px")
+                        // .style("width","100px")
+                        // .style("height", "100px");
 
         var mouseover = function(d) {
             tooltip.style("opacity", 1)
+            .style("left", (d3.event.pageX + 30) + "px")
+            .style("top", (d3.event.pageY + 30) + "px");
             d3.select(this)
-            .style("stroke", "black")
-            .style("opacity", 1)
+            //.style("stroke", "black")
+            .style("opacity", 0.5)
+            .append("div")
+
         }
   
         var mousemove = function(d) {
-            tooltip.html("name: " + d.name)
+            tooltip.html("name: " + d.type + "<br>"+
+                        "industry:"+ d.industry+ "<br>"+
+                        "type:"+d.name+"<br>"+
+                        "id:"+d.id)
         }
  
         var mouseleave = function(d) {
             tooltip.style("opacity", 0)
             d3.select(this)
-            .style("stroke", "none")
-            .style("opacity", 0.8)
+            //.style("stroke", "none")
+            .style("opacity", 1)
         } 
 
         d3.selectAll('circle')
@@ -365,7 +364,6 @@
             .on("mousemove", mousemove)
             .on("mouseleave", mouseleave)
         
-
 
         function ticked(){
             graph4_links
