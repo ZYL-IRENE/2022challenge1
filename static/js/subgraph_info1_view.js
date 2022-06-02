@@ -3,10 +3,16 @@ var info7_graph = echarts.init(document.getElementById('info7-2'));
 var graph_colors = ['#91C7AE', '#749F83', '#CA8622', '#BDA29A', '#6E7074','#546570','#D7E0E8','#C23531']
 var industry_color = ['#000000','#464646','#696969','#808080','#A9A9A9','#C0C0C0','#D3D3D3','	#DCDCDC','#F5F5F5']
 info6_option = {
+      title: {
+          text: '点边数量                                       黑灰产业',
+//          subtext: 'Default layout',
+          top: 80,
+          left: 'center'
+        },
     tooltip: {
         show: true,
-        trigger: 'item'
-//        formatter: '{a} <br/>{b}: {c} ({d}%)'
+        trigger: 'item',
+        formatter: '{a} <br/>{b}: {c} ({d}%)'
     },
     legend: {
         data: ['Domain', 'IP', 'Cert', 'Whois_Name', 'Whois_Phone', 'Whois_Email', 'IP_C', 'ASN']
@@ -15,9 +21,10 @@ info6_option = {
     {
       name: 'link',
       type: 'pie',
+      center: ['25%', '50%'],
 //      color: ['#20B2AA', '#008B8B', '#DAA520', '#DEB887', '#BC8F8F','#A9A9A9','#DCDCDC','#CD5C5C'],
 //      selectedMode: 'single',
-      radius: [0, '20%'],
+      radius: [0, '25%'],
       label: {
         position: 'inner',
         fontSize: 14
@@ -31,8 +38,9 @@ info6_option = {
     {
       name: 'node',
       type: 'pie',
+      center: ['25%', '50%'],
 //      color: graph_colors,
-      radius: ['25%', '35%'],
+      radius: ['35%', '50%'],
       label: {
         show:false,
       },
@@ -46,8 +54,9 @@ info6_option = {
     {
       name: 'type',
       type: 'pie',
+      center: ['75%', '50%'],
       color: industry_color,
-      radius: ['40%', '55%'],
+      radius: 50,
       label: {
         fontSize:14,
       },
@@ -68,7 +77,11 @@ info7_option ={
       top: 'bottom',
       left: 'right'
     },
-    tooltip: {},
+    tooltip: {
+        show: true,
+        trigger: 'item',
+        formatter: '{a} <br/> {b} '
+    },
     legend: [
       {
         data: ['Domain', 'IP', 'Cert', 'Whois_Name', 'Whois_Phone', 'Whois_Email', 'IP_C', 'ASN']
@@ -125,7 +138,7 @@ $.get('/subgraph-info2-view').done(function (info7_data){
 
 $('#graphTypes').on('change',function(){
     var lie=document.getElementById("graphTypes")//获取select标签
-    var index=lie.selectedIndex
+    var index=lie.selectedIn
         $.ajax({
             url:'/subgraph-info1-view',
             type: 'get',
