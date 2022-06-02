@@ -1,3 +1,4 @@
+# coding = utf-8
 from flask import Flask,render_template,jsonify,request,Response
 import utils
 import json
@@ -19,8 +20,18 @@ samples = [
     ['Whois_Phone_fd0a3f6712ff520edae7e554cb6dfb4bdd2af1e4a97a39ed9357b31b6888b4af',
      'IP_21ce145cae6730a99300bf677b83bbe430cc0ec957047172e73659372f0031b8',
      'Domain_7939d01c5b99c39d2a0f2b418f6060b917804e60c15309811ef4059257c0818a',
-     'Domain_587da0bac152713947db682a5443ef639e35f77a3b59e246e8a07c5eccae67e5']
-]
+     'Domain_587da0bac152713947db682a5443ef639e35f77a3b59e246e8a07c5eccae67e5'],
+    ['Domain_75213f3ffa988b2b524a633048e6617513f0427f394b5fecff09c06ac24b9278'],  # 6 A,B 154 * 中
+    ['Domain_5198e04060720abfd92a15aefeeec2c50b4de5b537ab9486673a14e901274585'],  # 7 G 113 * 小
+    ['Domain_8fa3cca3afda01abc25100119653634f4f44a0f9eb97830c029510034a5a7638'],  # 8 I 35 * 小
+    ['Domain_0f3d5e29ea794b4b431335ff8cc86a1d37e335ef7ee41f26ca12012f8b2d6ab9'],  # 9 B 50 * 中
+    ['Whois_Name_c8b8f7928d919ef75276fc12a3f3df5283988d9ff1da465703d08f1f5c8a085e'],  # 14 Whois_Name 554 * 大
+    ['Domain_28d26091ef22a5472607d2d3d29db879fd5ee60b4d2bf5709e5c5165c56fa1c8',  # 33
+     'Domain_513cc143f598864d825b5352742c85d0e325baa5917efce7b3df69753badd443',  # 37
+     'Domain_c6fb2192fe6ba2de0f1258c168f34382df63658359ee831bbda9f669db2e0499',  # 6
+     'Domain_3063a0302039d8eefbfba6d41d1d123e3344661a9038f40859d0c859d22cf528']  # 23 (16) C,E,A,B 大
+    ]
+
 
 @app.route('/')
 def hello_world():  # put application's code here
@@ -80,8 +91,8 @@ def getId_Name():
 def get_info6_view_data():
     graph6_data_node, graph6_data_link, graph6_data_type = utils.get_data_info6()
     graph6_nodes_all = ['Domain', 'IP', 'Cert', 'Whois_Name', 'Whois_Phone', 'Whois_Email', 'IP_C', 'ASN']
-    graph6_links_all = ['VeryStrong', 'Strong', 'Ordinary', 'Weak']
-    graph6_types_all = ['A','B','C','D','E','F','G','H','I']
+    graph6_links_all = ['很强', '强', '中', '弱']
+    graph6_types_all = ['涉黄','涉赌','涉骗','涉毒','涉枪','黑客','非法交易平台','非法支付平台','其他']
     graph6_res_node = []
     graph6_res_link = []
     graph6_res_type = []
@@ -112,4 +123,4 @@ def get_info7_view_data():
     return jsonify({"node": graph7_data_node, "link": graph7_data_link, "category": graph7_data_category})
 # get_info7_view_data()
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=8000)
+    app.run(host='127.0.0.1', port=8080)
