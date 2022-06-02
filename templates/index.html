@@ -53,16 +53,15 @@
                  子图详细信息
             </div>
             <div id="subgraph-control-view">
+
               <div style="height: 100%; width: 60%; box-sizing: border-box; border-right: var(--border-color) 1px solid; float: left">
-                <div id = "info5-1">
-                    <br><h3 style="font-weight:bold;font-size:15px;color: gray;border-radius:10px;border-color:white;padding: 6px">请输入：</h3>
-                    <form method="get" id="id_name" onsubmit="return false">
-                      <h4 style="text-indent: 2em;font-weight:bold;font-size:13px;color: gray;border-radius:10px;border-color:white;padding: 6px">ID：<input type="text" name="id" id="id"></h4>
-                      <h4 style="text-indent: 2em;"> <input type="submit" value="确认/submit" onclick="login()" style="font-weight:bold;font-size:13px;color: gray;border-radius:10px;border-color:white;padding: 8px"></h4>
-                    </form>
-                </div>
-                <div id = "info5-2">
-                    <div id="graphList">
+                <br><h3 style="font-weight:bold;font-size:13px;border-radius:10px;border-color:white;padding: 6px">请输入：</h3>
+                <form method="get" id="id_name" onsubmit="return false">
+                  <h4 style="text-indent: 2em;font-weight:bold;font-size:13px;color: gray;border-radius:10px;border-color:white;padding: 6px">ID：<input type="text" name="id" id="id"></h4>
+                  <h4 style="text-indent: 2em;"> <input type="submit" value="确认/submit" onclick="login()" style="font-weight:bold;font-size:13px;color: gray;border-radius:10px;border-color:white;padding: 8px"></h4>
+                </form>
+
+                 <div id="graphList">
                         <br><h3 style="font-weight:bold;font-size:15px;color: gray;border-radius:10px;border-color:white;padding: 6px">请选择：</h3>
                         <h4 style="text-indent: 2em;font-weight:bold;font-size:13px;color: gray;border-radius:10px;border-color:white;padding: 6px">子图序号：
                             <select name="graphTypes" id="graphTypes">
@@ -80,10 +79,7 @@
                             </select>
                         </h4>
                     </div>
-                    </div>
               </div>
-                
-              
               <div style="height: 100%; width: 40%; box-sizing: border-box; float: left">
                   <h3 style="font-weight:bold;font-size:12px;border-radius:10px;border-color:white;padding: 6px">是否包括非黑灰网络资产：</h3>
                   <select id="is_contain_empty_industry" name="is_contain_empty_industry" value="True"
@@ -117,14 +113,8 @@
             <div id="subgraph-info1-view">
                 <div id="info6-1">
                     <p>子图资产信息</p>
-                    <div id="subgraph-info1-view">
-                        <div id="info6-1">
-                            <p>子图列表</p>
-                        </div>
-                    <div id="info6-2"></div>
-                   </div>
-               </div>
-               <div id="info6-2"></div>
+                </div>
+                <div id="info6-2"></div>
             </div>
             <div id="subgraph-info2-view">
                 <div id="info7-1">
@@ -155,6 +145,73 @@
         var a = $("#is_contain_empty_industry").val();
         var b = $("#cert_n").val();
         var c = $("#center_ratio").val();
+        var type = $("#graphTypes").val();
+        if (type==="Subgraph1"){
+            a = 'True';
+            b = '100';
+            c = '0.25';
+            d = 'id=Domain_c58c149eec59bb14b0c102a0f303d4c20366926b5c3206555d2937474124beb9';
+        }
+        else if (type==="Subgraph2"){
+            a = 'True';
+            b = '100';
+            c = '0.25';
+            d = 'id=IP_400c19e584976ff2a35950659d4d148a3d146f1b71692468132b849b0eb8702c';
+        }
+        else if (type==="Subgraph3"){
+            a = 'False';
+            b = '200';
+            c = '0.02';
+            d = 'id=Domain_24acfd52f9ceb424d4a2643a832638ce1673b8689fa952d9010dd44949e6b1d9';
+        }
+        else if (type==="Subgraph4"){
+            a = 'True';
+            b = '100';
+            c = '0.25';
+            d = 'id=IP_7e730b193c2496fc908086e8c44fc2dbbf7766e599fabde86a4bcb6afdaad66e';
+        }
+        else if (type==="Subgraph5"){
+            a = 'False';
+            b = '200';
+            c = '0.1';
+            d = 'id=Whois_Phone_fd0a3f6712ff520edae7e554cb6dfb4bdd2af1e4a97a39ed9357b31b6888b4af';
+        }
+        else if (type==="Subgraph6"){
+            a = 'True';
+            b = '100';
+            c = '0.25';
+            d = 'id=Domain_75213f3ffa988b2b524a633048e6617513f0427f394b5fecff09c06ac24b9278';
+        }
+        else if (type==="Subgraph7"){
+            a = 'True';
+            b = '100';
+            c = '0.25';
+            d = 'id=Domain_5198e04060720abfd92a15aefeeec2c50b4de5b537ab9486673a14e901274585';
+        }
+        else if (type==="Subgraph8"){
+            a = 'True';
+            b = '100';
+            c = '0.05';
+            d = 'id=Domain_8fa3cca3afda01abc25100119653634f4f44a0f9eb97830c029510034a5a7638';
+        }
+        else if (type==="Subgraph9"){
+            a = 'True';
+            b = '100';
+            c = '0.25';
+            d = 'id=Domain_0f3d5e29ea794b4b431335ff8cc86a1d37e335ef7ee41f26ca12012f8b2d6ab9';
+        }
+        else if (type==="Subgraph10"){
+            a = 'True';
+            b = '100';
+            c = '0.25';
+            d = 'id=Whois_Name_c8b8f7928d919ef75276fc12a3f3df5283988d9ff1da465703d08f1f5c8a085e';
+        }
+        else if (type==="Subgraph11"){
+            a = 'True';
+            b = '100';
+            c = '0.4';
+            d = 'id=Domain_28d26091ef22a5472607d2d3d29db879fd5ee60b4d2bf5709e5c5165c56fa1c8';
+        }
         $.ajax({
             type: "get",
             url: '/register',
