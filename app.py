@@ -29,8 +29,9 @@ samples = [
     ['Domain_28d26091ef22a5472607d2d3d29db879fd5ee60b4d2bf5709e5c5165c56fa1c8',  # 33
      'Domain_513cc143f598864d825b5352742c85d0e325baa5917efce7b3df69753badd443',  # 37
      'Domain_c6fb2192fe6ba2de0f1258c168f34382df63658359ee831bbda9f669db2e0499',  # 6
-     'Domain_3063a0302039d8eefbfba6d41d1d123e3344661a9038f40859d0c859d22cf528']  # 23 (16) C,E,A,B 大
-    ]
+     'Domain_3063a0302039d8eefbfba6d41d1d123e3344661a9038f40859d0c859d22cf528'],  # 23 (16) C,E,A,B 大
+    ['Domain_28d26091ef22a5472607d2d3d29db879fd5ee60b4d2bf5709e5c5165c56fa1c8']  # True 200 0.3
+]
 
 
 @app.route('/')
@@ -64,7 +65,7 @@ def getId_Name():
     ratio = request.values.get('ratio')
     id = id[3:]
     idx = 0
-    for i in range(5):
+    for i in range(11):
         if id in samples[i]:
             idx = i + 1
             break
@@ -123,4 +124,4 @@ def get_info7_view_data():
     return jsonify({"node": graph7_data_node, "link": graph7_data_link, "category": graph7_data_category})
 # get_info7_view_data()
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=8080)
+    app.run(host='127.0.0.1', port=8000)
