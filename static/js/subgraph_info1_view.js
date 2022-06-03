@@ -256,13 +256,13 @@ function knowledgegraph7(original_nodes,original_links){
       //console.log(scalerR(nodes_R[i]))
   }
 
-  var graph7_div = document.getElementById('subgraph-info2-view');
+  var graph7_div = document.getElementById('info7-2');
   var graph7_width = graph7_div.clientWidth;
   var graph7_height = graph7_div.clientHeight;
 
-  d3.select("#subgraph-info2-view").select("svg").remove();
+  d3.select("#info7-2").select("svg").remove();
 
-  var graph7_svg = d3.select("#subgraph-info2-view")
+  var graph7_svg = d3.select("#info7-2")
       .append("svg")
       .attr("width",graph7_width)
       .attr("height",graph7_height);
