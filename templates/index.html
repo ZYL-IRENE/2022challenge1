@@ -277,7 +277,7 @@
             nodes_R[index2] ++;
         }
         for(var i=0;i<nodes_R.length;i++){
-            nodes_R[i] = Math.log10(nodes_R[i]);
+            nodes_R[i] = Math.pow(Math.log10(nodes_R[i]+1),1/4);
         }
         scalerR = d3.scaleLinear().domain(nodes_R).range([10,20]);
         for(var i=0;i<original_nodes.length;i++){
@@ -286,7 +286,7 @@
                 'name':node.type,
                 'group':1,
                 'id':node.id,
-                'R':scalerR(nodes_R[i]),
+                'R':nodes_R[i]*10,
                 'index':i,
                 'type':node.name,
                 'industry':node.industry,
