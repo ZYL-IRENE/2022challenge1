@@ -289,7 +289,7 @@
         for(var i=0;i<nodes_R.length;i++){
             nodes_R[i] = Math.log10(nodes_R[i]);
         }
-        scalerR = d3.scaleLinear().domain(nodes_R).range([10,20]);
+        scalerR = d3.scaleLinear().domain([d3.min(nodes_R),d3.max(nodes_R)]).range([10,20]);
         for(var i=0;i<original_nodes.length;i++){
            var node = original_nodes[i];
             nodes.push({
